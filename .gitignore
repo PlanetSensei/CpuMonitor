@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/CPU_Monitor/v15
+/obj/Debug
+/PS_CpuMonitor.csproj.user

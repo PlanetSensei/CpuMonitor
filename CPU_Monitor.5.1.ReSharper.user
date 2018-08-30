@@ -1,0 +1,89 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">True</setting>
+    </boolean>
+  </SettingsComponent>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="this" priority="5" />
+      <Item value="false" priority="0" />
+      <Item value="if" priority="0" />
+      <Item value="null" priority="0" />
+      <Item value="new" priority="1" />
+      <Item value="WindowSettings" priority="0" />
+      <Item value="Point" priority="0" />
+      <Item value="else" priority="0" />
+      <Item value="Application`0" priority="0" />
+      <Item value="System" priority="0" />
+      <Item value="Runtime" priority="0" />
+      <Item value="Serialization" priority="0" />
+      <Item value="Formatter`0" priority="0" />
+      <Item value="Formatters" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:CpuMonitor.MainWindow">
+      <Item value="mTimer" priority="1" />
+      <Item value="windowSettings" priority="3" />
+      <Item value="Location" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.Timer">
+      <Item value="Stop`0" priority="0" />
+      <Item value="Enabled" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Runtime.Serialization.StreamingContextStates">
+      <Item value="Clone" priority="0" />
+      <Item value="Remoting" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:CpuMonitor.Model.WindowSettings">
+      <Item value="Location" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.Forms.Application">
+      <Item value="EnableVisualStyles`0" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Model/f:WindowSettings.cs" caret="527" fromTop="22" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:Program.cs" caret="348" fromTop="17" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:CpuPaint.cs" caret="2610" fromTop="25" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Extensions/f:DeepCloneExtension.cs" caret="4202" fromTop="42" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="9145" fromTop="11" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="1437" fromTop="37" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Extensions/f:DeepCloneExtension.cs" caret="5686" fromTop="38" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Model/f:WindowSettings.cs" caret="432" fromTop="18" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Model/f:WindowSettings.cs" caret="654" fromTop="28" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Model/f:WindowSettings.cs" caret="527" fromTop="22" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="8165" fromTop="13" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:Program.cs" caret="166" fromTop="9" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:Program.cs" caret="229" fromTop="11" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:Program.cs" caret="382" fromTop="17" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="1295" fromTop="32" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="9463" fromTop="21" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="2748" fromTop="15" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Extensions/f:DeepCloneExtension.cs" caret="2529" fromTop="5" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Extensions/f:DeepCloneExtension.cs" caret="5400" fromTop="52" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Extensions/f:DeepCloneExtension.cs" caret="170" fromTop="0" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/d:Extensions/f:DeepCloneExtension.cs" caret="4711" fromTop="52" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="10052" fromTop="36" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="10186" fromTop="40" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="1438" fromTop="35" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="1590" fromTop="41" />
+      <File id="5A0751E0-FC8A-4385-BA4D-ED74E65C380D/f:MainWindow.cs" caret="9145" fromTop="11" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False">
+    </NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>
