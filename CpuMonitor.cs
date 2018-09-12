@@ -1,30 +1,31 @@
 using System;
 using System.Diagnostics;
 
-
 namespace CpuMonitor
 {
-  /// <summary>
-  /// Zusammenfassung für CPUMonitor.
-  /// </summary>
-  public class CpuMonitor : IDisposable
+    /// <summary>
+    /// Zusammenfassung für CPUMonitor.
+    /// </summary>
+    public class Monitor : IDisposable
   {
-    protected PerformanceCounter cpuCounter;
+      private PerformanceCounter cpuCounter;
 
-    public CpuMonitor()
+    public Monitor()
     {
-      this.cpuCounter = new PerformanceCounter();
-
-      this.cpuCounter.CategoryName = "Processor";
-      this.cpuCounter.CounterName = "% Processor Time";
-      this.cpuCounter.InstanceName = "_Total";
+        this.cpuCounter = new PerformanceCounter
+        {
+            CategoryName = "Processor",
+            CounterName = "% Processor Time",
+            InstanceName = "_Total"
+        };
     }
 
     /// <summary>
     /// Call this method every time you need to know the current cpu usage.
     /// </summary>
     /// <returns></returns>
-    public float getCurrentCpuUsage()
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Cpu")]
+    public float GetCurrentCpuUsage()
     {
       float currentValue = this.cpuCounter.NextValue();
       return currentValue;
@@ -64,7 +65,7 @@ namespace CpuMonitor
     /// </summary>
     /// <param name="disposing">TRUE, wenn die Methode durch User-Code aufgerufen wurde oder
     /// FALSE, wenn die Methode durch die Runtime aufgerufen wurde.</param>
-    protected void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
       // Prüfen, ob Dispose() bereits aufgerufen wurde.
       if (!this.m_Disposed)
@@ -72,11 +73,8 @@ namespace CpuMonitor
         // Wenn disposing == TRUE, gib alle managed und unmanaged Resourcen frei.
         if (disposing)
         {
-          // Hier MANAGED Resourcen freigeben.
-          if (this.cpuCounter != null)
-          {
-            this.cpuCounter.Dispose();
-          }
+            // Hier MANAGED Resourcen freigeben.
+            this.cpuCounter?.Dispose();
         }
 
         // Hier UNMANAGED Resourcen freigeben.
@@ -93,12 +91,12 @@ namespace CpuMonitor
     /// Das gibt der Basisklasse die Möglichkeit zum Aufräumen.
     /// Abgeleitete Klassen dürfen keine Destruktoren implementieren.
     /// </summary>
-    ~CpuMonitor()
+    ~Monitor()
     {
       // Hier keine Code-Duplizierung zum Aufräumen verwenden.
       // Für bessere Lesbarkeit und Wartbarkeit soll hier stattdessen
       // nur Dispose(false) aufgerufen werden.
-      Dispose(false);
+      this.Dispose(false);
     }
 
     #endregion

@@ -1,15 +1,15 @@
 using System;
-using System.Drawing;
-using System.Collections;
-using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace CpuMonitor
 {
-  /// <summary>
-  /// Zusammenfassung für CpuPaint.
-  /// </summary>
-  public class CpuPaint : IDisposable
+    /// <summary>
+    /// Zusammenfassung für CpuPaint.
+    /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Cpu")]
+    public class CpuPaint : IDisposable
   {
     /// <summary>
     /// Anzahl der angezeigten Maßeinheiten-Zeilen.
@@ -35,16 +35,16 @@ namespace CpuMonitor
     /// <param name="penColor">Der Pen, mit dem der Graph gezeichnet wird.</param>
     public CpuPaint(Control pControl, Pen graphPen)
     {
-      mControl = pControl;
-      mControl.Paint += new PaintEventHandler(mControl_Paint);
+      this.mControl = pControl;
+      this.mControl.Paint += new PaintEventHandler(this.mControl_Paint);
 
-      mGraphPen = graphPen;
+      this.mGraphPen = graphPen;
     }
 
 
     public void DrawGraph(float pUsage)
     {
-      mUsage = pUsage;
+      this.mUsage = pUsage;
     }
 
 
@@ -61,9 +61,9 @@ namespace CpuMonitor
         int yOffset = (int)(rowHeight * i);
 
         lPointLeft = new Point(0, yOffset);
-        lPointRight = new Point(mControl.Width, yOffset);
+        lPointRight = new Point(this.mControl.Width, yOffset);
 
-        pGraphics.DrawLine(mBackgroundLinesPen, lPointLeft, lPointRight);
+        pGraphics.DrawLine(this.mBackgroundLinesPen, lPointLeft, lPointRight);
       }
     }
 
@@ -77,7 +77,7 @@ namespace CpuMonitor
     {
       int lXCoordinate = pPointList.Count * PIX_DELTA_X_COORDS;
 
-      if (lXCoordinate > mControl.ClientSize.Width)
+      if (lXCoordinate > this.mControl.ClientSize.Width)
       {
         pPointList.RemoveAt(0);
       }
@@ -85,10 +85,10 @@ namespace CpuMonitor
       Point lStartPoint = new Point(0, (int)pPointList[0]);
       Point lNextPoint;
 
-      for (int i = 0; i < mPointList.Count; i++)
+      for (int i = 0; i < this.mPointList.Count; i++)
       {
         lNextPoint = new Point(i * PIX_DELTA_X_COORDS, (int)pPointList[i]);
-        pGraphics.DrawLine(mGraphPen, lStartPoint, lNextPoint);
+        pGraphics.DrawLine(this.mGraphPen, lStartPoint, lNextPoint);
         lStartPoint = lNextPoint;
       }
     }
@@ -97,7 +97,7 @@ namespace CpuMonitor
     {
       Graphics g = e.Graphics;
       Region lRegion = g.Clip;
-      int lHeight = mControl.ClientSize.Height;
+      int lHeight = this.mControl.ClientSize.Height;
 
       //g.FillRegion( new SolidBrush( Color.Black ), lRegion );
 
@@ -106,13 +106,13 @@ namespace CpuMonitor
       if (lHeight != 0)
       {
         float lTempPercent = (float)lHeight / 100;
-        lHeight = (int)(lTempPercent * mUsage);
+        lHeight = (int)(lTempPercent * this.mUsage);
       }
 
-      int lYCoordinate = mControl.ClientSize.Height - lHeight;
-      mPointList.Add(lYCoordinate);
+      int lYCoordinate = this.mControl.ClientSize.Height - lHeight;
+      this.mPointList.Add(lYCoordinate);
 
-      this.drawUsage(g, mPointList);
+      this.drawUsage(g, this.mPointList);
 
     }
 
@@ -198,7 +198,7 @@ namespace CpuMonitor
       // Hier keine Code-Duplizierung zum Aufräumen verwenden.
       // Für bessere Lesbarkeit und Wartbarkeit soll hier stattdessen
       // nur Dispose(false) aufgerufen werden.
-      Dispose(false);
+      this.Dispose(false);
     }
 
     #endregion

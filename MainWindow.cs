@@ -1,11 +1,10 @@
 using System;
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
-using System.IO;
+using CpuMonitor.Common;
 using CpuMonitor.Extensions;
 using CpuMonitor.Model;
-using CpuMonitor.Shared;
 
 namespace CpuMonitor
 {
@@ -16,13 +15,13 @@ namespace CpuMonitor
   {
     #region Fields
 
-    private Timer mTimer;
-    private CpuMonitor mCpuMonitor;
-    private System.ComponentModel.IContainer components = null;
+    private readonly Timer mTimer;
+    private readonly Monitor mCpuMonitor;
+    private readonly IContainer components = null;
+    private readonly CpuPaint mCpuPaint;
     private Label mLabCpu;
     private Panel mPnlDisplayGraph;
     private Panel mPnlLabel;
-    private CpuPaint mCpuPaint;
 
     /// <summary>
     /// Saves current property values of the main window.
@@ -33,30 +32,31 @@ namespace CpuMonitor
 
     #region Constructor
 
-    /// <summary>
-    /// Konstruktor.
-    /// </summary>
+    /// <inheritdoc />
     public MainWindow()
     {
       //
       // Erforderlich für die Windows Form-Designerunterstützung
       //
-      InitializeComponent();
+      this.InitializeComponent();
 
       string appTitle = string.Format("{0} - {1}",
                                       Titles.ApplicationTitle,
                                       Titles.VendorName);
       this.Text = appTitle;
 
-      this.mCpuMonitor = new CpuMonitor();
+      this.mCpuMonitor = new Monitor();
       this.mCpuPaint = new CpuPaint(this.mPnlDisplayGraph, new Pen(Color.Red, 1));
 
-      this.FormClosing += this.mainWindowOnFormClosing;
+      this.FormClosing += this.MainWindowOnFormClosing;
 
-      this.mTimer = new Timer();
-      this.mTimer.Interval = 1000;
-      this.mTimer.Enabled = true;
-      this.mTimer.Tick += this.timerTick;
+        this.mTimer = new Timer
+        {
+            Interval = 1000,
+            Enabled = true
+        };
+
+        this.mTimer.Tick += this.TimerTick;
 
     }
 
@@ -82,16 +82,16 @@ namespace CpuMonitor
         // Wenn disposing == TRUE, gib alle managed und unmanaged Resourcen frei.
         if (disposing)
         {
-          if (components != null)
+          if (this.components != null)
           {
-            components.Dispose();
+            this.components.Dispose();
           }
 
           if (this.mTimer != null)
           {
             this.mTimer.Stop();
             this.mTimer.Enabled = false;
-            this.mTimer.Tick -= this.timerTick;
+            this.mTimer.Tick -= this.TimerTick;
             this.mTimer.Dispose();
           }
 
@@ -139,7 +139,7 @@ namespace CpuMonitor
       // Hier keine Code-Duplizierung zum Aufräumen verwenden.
       // Für bessere Lesbarkeit und Wartbarkeit soll hier stattdessen
       // nur Dispose(false) aufgerufen werden.
-      Dispose(false);
+      this.Dispose(false);
     }
 
     #endregion
@@ -213,8 +213,8 @@ namespace CpuMonitor
       this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
       this.Text = "Planet-Sensei.de - CPU Monitor";
       this.TopMost = true;
-      this.Load += new System.EventHandler(this.mainWindowOnLoad);
-      this.LocationChanged += new System.EventHandler(this.mainWindowOnLocationChanged);
+      this.Load += new System.EventHandler(this.MainWindowOnLoad);
+      this.LocationChanged += new System.EventHandler(this.MainWindowOnLocationChanged);
       this.mPnlDisplayGraph.ResumeLayout(false);
       this.mPnlLabel.ResumeLayout(false);
       this.ResumeLayout(false);
@@ -227,13 +227,13 @@ namespace CpuMonitor
     /// <summary>
     /// Updates the UI with the current values in the defined timer interval.
     /// </summary>
-    private void timerTick(object sender, EventArgs e)
+    private void TimerTick(object sender, EventArgs e)
     {			
-      int lUsage = (int)mCpuMonitor.getCurrentCpuUsage();
+      int lUsage = (int)this.mCpuMonitor.GetCurrentCpuUsage();
 
-      mCpuPaint.DrawGraph( lUsage );
+      this.mCpuPaint.DrawGraph( lUsage );
       this.mPnlDisplayGraph.Invalidate();
-      mLabCpu.Text = lUsage.ToString() + "%";
+      this.mLabCpu.Text = lUsage.ToString() + "%";
 
       // Should not be needed anymore...?
       //Application.DoEvents();
@@ -245,7 +245,7 @@ namespace CpuMonitor
     /// <summary>
     /// Signals the application to close.
     /// </summary>
-    private void btnExitOnClick(object sender, EventArgs e)
+    private void BtnExitOnClick(object sender, EventArgs e)
     {
       Application.Exit();
     }
@@ -253,7 +253,7 @@ namespace CpuMonitor
     /// <summary>
     /// Memorizes the new location if the windows was moved by the user.
     /// </summary>
-    private void mainWindowOnLocationChanged(object sender, EventArgs e)
+    private void MainWindowOnLocationChanged(object sender, EventArgs e)
     {
       this.windowSettings.Location = this.Location;
     }
@@ -261,19 +261,19 @@ namespace CpuMonitor
     /// <summary>
     /// Occurs when the form is closing, or, in this case, when the application is closing.
     /// </summary>
-    private void mainWindowOnFormClosing(object sender, FormClosingEventArgs e)
+    private void MainWindowOnFormClosing(object sender, FormClosingEventArgs e)
     {
       this.mTimer.Stop();
       this.mTimer.Enabled = false;
-      this.mTimer.Tick -= this.timerTick;
+      this.mTimer.Tick -= this.TimerTick;
 
-      this.windowSettings.Save(Files.SettingsFile, BackupOptions.None);
+      this.windowSettings.Save(Files.SettingsFile, BackupOption.None);
     }
 
     /// <summary>
     /// Occurs when the application has started and the form is displayed for the first time.
     /// </summary>
-    private void mainWindowOnLoad(object sender, EventArgs e)
+    private void MainWindowOnLoad(object sender, EventArgs e)
     {
       this.windowSettings.Load(out this.windowSettings, Files.SettingsFile);
 
@@ -284,10 +284,6 @@ namespace CpuMonitor
       
       this.Location = this.windowSettings.Location;
 
-      //this.mTimer = new Timer();
-      //this.mTimer.Interval = 1000;
-      //this.mTimer.Enabled = true;
-      //this.mTimer.Tick += this.timerTick;
       this.mTimer.Start();
     }
 

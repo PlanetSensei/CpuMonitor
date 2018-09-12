@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
-namespace CpuMonitor.Shared
+namespace CpuMonitor.Common
 {
   /// <summary>
   /// Contains names relevant to file handling.
@@ -21,7 +17,7 @@ namespace CpuMonitor.Shared
     /// <summary>
     /// The folder name of the application.
     /// </summary>
-    public const string AppDataDirName = "CpuMonitor";
+    public const string AppDataFolderName = "CpuMonitor";
 
     /// <summary>
     /// The settings file name.
@@ -46,7 +42,7 @@ namespace CpuMonitor.Shared
       {
         if (string.IsNullOrEmpty(fullSettingFile))
         {
-          Files.fullSettingFile = Path.Combine(DirNames.AppDataDirectory, Files.SettingsFileName);
+          Files.fullSettingFile = Path.Combine(FolderNames.AppDataDirectory, Files.SettingsFileName);
         }
 
         return Files.fullSettingFile;

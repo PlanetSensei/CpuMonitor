@@ -1,6 +1,6 @@
-﻿namespace CpuMonitor.Shared
+﻿namespace CpuMonitor.Common
 {
-  public enum BackupOptions
+  public enum BackupOption
   {
     /// <summary>
     /// No custom behavior defined.

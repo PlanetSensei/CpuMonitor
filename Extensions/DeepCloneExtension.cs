@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
+using CpuMonitor.Common;
 using CpuMonitor.Interfaces;
-using CpuMonitor.Shared;
 
 namespace CpuMonitor.Extensions
 {
@@ -24,10 +20,10 @@ namespace CpuMonitor.Extensions
     /// <returns>Returns the cloned object.</returns>
     public static object DeepClone(this IDeepCloneable objectToBeCloned)
     {
-      byte[] serializedData = DeepCloneExtension.getSerializedData(objectToBeCloned);
+      byte[] serializedData = DeepCloneExtension.GetSerializedData(objectToBeCloned);
 
       // Now create the cloned object.
-      object clonedObject = deserializeData(serializedData);
+      object clonedObject = DeserializeData(serializedData);
       return clonedObject;
     }
 
@@ -36,12 +32,12 @@ namespace CpuMonitor.Extensions
     /// </summary>
     /// <param name="objectToBeSaved">The object to be saved.</param>
     /// <param name="fileName">Path and file name to define the saving location.</param>
-    /// <param name="saveOptions">Defines if a backup file should be created if a file with the same name already exists.</param>
-    public static void Save(this IDeepCloneable objectToBeSaved, string fileName, BackupOptions saveOptions = BackupOptions.CreateBackup)
+    /// <param name="saveOption">Defines if a backup file should be created if a file with the same name already exists.</param>
+    public static void Save(this IDeepCloneable objectToBeSaved, string fileName, BackupOption saveOption = BackupOption.CreateBackup)
     {
-      byte[] serializedData = DeepCloneExtension.getSerializedData(objectToBeSaved);
+      byte[] serializedData = DeepCloneExtension.GetSerializedData(objectToBeSaved);
 
-      DeepCloneExtension.backupFileIfExists(fileName, saveOptions);
+      DeepCloneExtension.BackupFileIfExists(fileName, saveOption);
 
       using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
       {
@@ -72,7 +68,7 @@ namespace CpuMonitor.Extensions
         fileStream.Read(serializedData, 0, length);
       }
 
-      object objectInstance = DeepCloneExtension.deserializeData(serializedData);
+      object objectInstance = DeepCloneExtension.DeserializeData(serializedData);
       loadedInstance = (T)objectInstance;
     }
 
@@ -84,10 +80,10 @@ namespace CpuMonitor.Extensions
     /// If the file with the given name already exists it is renamed with a ".bak" extension.
     /// </summary>
     /// <param name="fileName">Path and file name to define the saving location.</param>
-    /// <param name="saveOptions">Defines if a backup file should be created if a file with the same name already exists.</param>
-    private static void backupFileIfExists(string fileName, BackupOptions saveOptions)
+    /// <param name="saveOption">Defines if a backup file should be created if a file with the same name already exists.</param>
+    private static void BackupFileIfExists(string fileName, BackupOption saveOption)
     {
-      if (saveOptions != BackupOptions.CreateBackup)
+      if (saveOption != BackupOption.CreateBackup)
       {
         return;
       }
@@ -115,7 +111,7 @@ namespace CpuMonitor.Extensions
     /// </summary>
     /// <param name="serializedData">The serialized object in raw byte form.</param>
     /// <returns>Returns the created object.</returns>
-    private static object deserializeData(byte[] serializedData)
+    private static object DeserializeData(byte[] serializedData)
     {
       using (MemoryStream memoryStream = new MemoryStream(serializedData))
       {
@@ -132,7 +128,7 @@ namespace CpuMonitor.Extensions
     /// </summary>
     /// <param name="objectToBeSerialized">The object to be serialized.</param>
     /// <returns>Returns the serialized data.</returns>
-    private static byte[] getSerializedData(IDeepCloneable objectToBeSerialized)
+    private static byte[] GetSerializedData(IDeepCloneable objectToBeSerialized)
     {
       using (MemoryStream memoryStream = new MemoryStream())
       {

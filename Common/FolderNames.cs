@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
-namespace CpuMonitor.Shared
+namespace CpuMonitor.Common
 {
-  /// <summary>
-  /// Contains relevant information about names, folder, and files.
-  /// </summary>
-  public static class DirNames
+    /// <summary>
+    /// Contains relevant information about names, folder, and files.
+    /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Dir")]
+    public static class FolderNames
   {
     #region Fields
 
@@ -23,18 +21,18 @@ namespace CpuMonitor.Shared
     /// <summary>
     /// Constructor.
     /// </summary>
-    static DirNames()
+    static FolderNames()
     {
       string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
       string appDataVendorFolder = Path.Combine(appDataFolder, Titles.VendorName);
-      DirNames.appDataApplicationFolder = Path.Combine(appDataVendorFolder, Files.AppDataDirName);
+      FolderNames.appDataApplicationFolder = Path.Combine(appDataVendorFolder, Files.AppDataFolderName);
 
       string myDocumentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
       string myDocumentsVendorFolder = Path.Combine(myDocumentsFolder, Titles.VendorName);
 
       // Check if folder exist and create them this is not yet the case.
-      DirNames.createFoldersIfNotExist(appDataVendorFolder,
-                                       DirNames.AppDataDirectory,
+      FolderNames.createFoldersIfNotExist(appDataVendorFolder,
+                                       FolderNames.AppDataDirectory,
                                        myDocumentsVendorFolder);
     }
 
@@ -51,7 +49,7 @@ namespace CpuMonitor.Shared
     {
       get
       {
-        return DirNames.appDataApplicationFolder;
+        return FolderNames.appDataApplicationFolder;
       }
     }
 
