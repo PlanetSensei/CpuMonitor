@@ -42,10 +42,10 @@ namespace CpuMonitor.Common
       {
         if (string.IsNullOrEmpty(fullSettingFile))
         {
-          Files.fullSettingFile = Path.Combine(FolderNames.AppDataDirectory, Files.SettingsFileName);
+          fullSettingFile = Path.Combine(FolderNames.AppDataDirectory, SettingsFileName);
         }
 
-        return Files.fullSettingFile;
+        return fullSettingFile;
       }
     }
 

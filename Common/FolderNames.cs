@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace CpuMonitor.Common
@@ -6,7 +7,7 @@ namespace CpuMonitor.Common
     /// <summary>
     /// Contains relevant information about names, folder, and files.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Dir")]
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Dir")]
     public static class FolderNames
   {
     #region Fields
@@ -25,14 +26,14 @@ namespace CpuMonitor.Common
     {
       string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
       string appDataVendorFolder = Path.Combine(appDataFolder, Titles.VendorName);
-      FolderNames.appDataApplicationFolder = Path.Combine(appDataVendorFolder, Files.AppDataFolderName);
+      appDataApplicationFolder = Path.Combine(appDataVendorFolder, Files.AppDataFolderName);
 
       string myDocumentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
       string myDocumentsVendorFolder = Path.Combine(myDocumentsFolder, Titles.VendorName);
 
       // Check if folder exist and create them this is not yet the case.
-      FolderNames.CreateFoldersIfNotExist(appDataVendorFolder,
-                                       FolderNames.AppDataDirectory,
+      CreateFoldersIfNotExist(appDataVendorFolder,
+                                       AppDataDirectory,
                                        myDocumentsVendorFolder);
     }
 
@@ -49,7 +50,7 @@ namespace CpuMonitor.Common
     {
       get
       {
-        return FolderNames.appDataApplicationFolder;
+        return appDataApplicationFolder;
       }
     }
 

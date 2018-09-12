@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using CpuMonitor.Common;
@@ -20,7 +21,7 @@ namespace CpuMonitor.Extensions
     /// <returns>Returns the cloned object.</returns>
     public static object DeepClone(this IDeepCloneable objectToBeCloned)
     {
-      byte[] serializedData = DeepCloneExtension.GetSerializedData(objectToBeCloned);
+      byte[] serializedData = GetSerializedData(objectToBeCloned);
 
       // Now create the cloned object.
       object clonedObject = DeserializeData(serializedData);
@@ -35,9 +36,9 @@ namespace CpuMonitor.Extensions
     /// <param name="saveOption">Defines if a backup file should be created if a file with the same name already exists.</param>
     public static void Save(this IDeepCloneable objectToBeSaved, string fileName, BackupOption saveOption = BackupOption.CreateBackup)
     {
-      byte[] serializedData = DeepCloneExtension.GetSerializedData(objectToBeSaved);
+      byte[] serializedData = GetSerializedData(objectToBeSaved);
 
-      DeepCloneExtension.BackupFileIfExists(fileName, saveOption);
+      BackupFileIfExists(fileName, saveOption);
 
       using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
       {
@@ -51,7 +52,7 @@ namespace CpuMonitor.Extensions
         /// <param name="callingInstance">The object that will be assigned the loaded values.</param>
         /// <param name="loadedInstance">Returns the object that was created using the data of the serialized file.</param>
         /// <param name="fileName">Path and file name to define the saving location.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "callingInstance")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "callingInstance")]
         public static void Load<T>(this IDeepCloneable callingInstance, out T loadedInstance, string fileName)
     {
       if (!(File.Exists(fileName)))
@@ -69,7 +70,7 @@ namespace CpuMonitor.Extensions
         fileStream.Read(serializedData, 0, length);
       }
 
-      object objectInstance = DeepCloneExtension.DeserializeData(serializedData);
+      object objectInstance = DeserializeData(serializedData);
       loadedInstance = (T)objectInstance;
     }
 

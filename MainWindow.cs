@@ -19,9 +19,9 @@ namespace CpuMonitor
     private readonly Monitor mCpuMonitor;
     private readonly IContainer components = null;
     private readonly CpuPaint mCpuPaint;
-    private Label mLabCpu;
-    private Panel mPnlDisplayGraph;
-    private Panel mPnlLabel;
+    private Label labelProcessor;
+    private Panel panelDisplayGraph;
+    private Panel panelLabel;
 
     /// <summary>
     /// Saves current property values of the main window.
@@ -42,19 +42,18 @@ namespace CpuMonitor
 
       this.Text = $"{Titles.ApplicationTitle} - {Titles.VendorName}";
 
-            this.mCpuMonitor = new Monitor();
-      this.mCpuPaint = new CpuPaint(this.mPnlDisplayGraph, new Pen(Color.Red, 1));
+      this.mCpuMonitor = new Monitor();
+      this.mCpuPaint = new CpuPaint(this.panelDisplayGraph, new Pen(Color.Red, 1));
 
       this.FormClosing += this.MainWindowOnFormClosing;
 
-        this.mTimer = new Timer
-        {
-            Interval = 1000,
-            Enabled = true
-        };
+      this.mTimer = new Timer
+      {
+          Interval = 1000,
+          Enabled = true
+      };
 
-        this.mTimer.Tick += this.TimerTick;
-
+      this.mTimer.Tick += this.TimerTick;
     }
 
     #endregion Constructor
@@ -79,10 +78,7 @@ namespace CpuMonitor
         // Wenn disposing == TRUE, gib alle managed und unmanaged Resourcen frei.
         if (disposing)
         {
-          if (this.components != null)
-          {
-            this.components.Dispose();
-          }
+          this.components?.Dispose();
 
           if (this.mTimer != null)
           {
@@ -92,30 +88,11 @@ namespace CpuMonitor
             this.mTimer.Dispose();
           }
 
-          if (this.mCpuMonitor != null)
-          {
-            this.mCpuMonitor.Dispose();
-          }
-
-          if (this.mLabCpu != null)
-          {
-            this.mLabCpu.Dispose();
-          }
-
-          if (this.mPnlDisplayGraph != null)
-          {
-            this.mPnlDisplayGraph.Dispose();
-          }
-
-          if (this.mPnlLabel != null)
-          {
-            this.mPnlLabel.Dispose();
-          }
-
-          if (this.mCpuPaint != null)
-          {
-            this.mCpuPaint.Dispose();
-          }
+          this.mCpuMonitor?.Dispose();
+          this.labelProcessor?.Dispose();
+          this.panelDisplayGraph?.Dispose();
+          this.panelLabel?.Dispose();
+          this.mCpuPaint?.Dispose();
         }
 
         base.Dispose( disposing );
@@ -149,71 +126,71 @@ namespace CpuMonitor
     /// </summary>
     private void InitializeComponent()
     {
-      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-      this.mLabCpu = new System.Windows.Forms.Label();
-      this.mPnlDisplayGraph = new System.Windows.Forms.Panel();
-      this.mPnlLabel = new System.Windows.Forms.Panel();
-      this.mPnlDisplayGraph.SuspendLayout();
-      this.mPnlLabel.SuspendLayout();
+      ComponentResourceManager resources = new ComponentResourceManager(typeof(MainWindow));
+      this.labelProcessor = new Label();
+      this.panelDisplayGraph = new Panel();
+      this.panelLabel = new Panel();
+      this.panelDisplayGraph.SuspendLayout();
+      this.panelLabel.SuspendLayout();
       this.SuspendLayout();
       // 
-      // mLabCpu
+      // labelProcessor
       // 
-      this.mLabCpu.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.mLabCpu.BackColor = System.Drawing.Color.Transparent;
-      this.mLabCpu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.mLabCpu.ForeColor = System.Drawing.Color.Green;
-      this.mLabCpu.Location = new System.Drawing.Point(0, 0);
-      this.mLabCpu.Name = "mLabCpu";
-      this.mLabCpu.Size = new System.Drawing.Size(29, 32);
-      this.mLabCpu.TabIndex = 0;
-      this.mLabCpu.Text = "0%";
-      this.mLabCpu.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      this.labelProcessor.Anchor = AnchorStyles.Top | AnchorStyles.Bottom 
+                                   | AnchorStyles.Left 
+                                   | AnchorStyles.Right;
+      this.labelProcessor.BackColor = Color.Transparent;
+      this.labelProcessor.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+      this.labelProcessor.ForeColor = Color.Green;
+      this.labelProcessor.Location = new Point(0, 0);
+      this.labelProcessor.Name = "labelProcessor";
+      this.labelProcessor.Size = new Size(29, 32);
+      this.labelProcessor.TabIndex = 0;
+      this.labelProcessor.Text = "0%";
+      this.labelProcessor.TextAlign = ContentAlignment.MiddleCenter;
       // 
-      // mPnlDisplayGraph
+      // panelDisplayGraph
       // 
-      this.mPnlDisplayGraph.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mPnlDisplayGraph.BackgroundImage")));
-      this.mPnlDisplayGraph.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-      this.mPnlDisplayGraph.Controls.Add(this.mPnlLabel);
-      this.mPnlDisplayGraph.Location = new System.Drawing.Point(8, 7);
-      this.mPnlDisplayGraph.Name = "mPnlDisplayGraph";
-      this.mPnlDisplayGraph.Size = new System.Drawing.Size(194, 77);
-      this.mPnlDisplayGraph.TabIndex = 1;
+      this.panelDisplayGraph.BackgroundImage = ((Image)(resources.GetObject("panelDisplayGraph.BackgroundImage")));
+      this.panelDisplayGraph.BackgroundImageLayout = ImageLayout.Stretch;
+      this.panelDisplayGraph.Controls.Add(this.panelLabel);
+      this.panelDisplayGraph.Location = new Point(8, 7);
+      this.panelDisplayGraph.Name = "panelDisplayGraph";
+      this.panelDisplayGraph.Size = new Size(194, 77);
+      this.panelDisplayGraph.TabIndex = 1;
       // 
-      // mPnlLabel
+      // panelLabel
       // 
-      this.mPnlLabel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mPnlLabel.BackgroundImage")));
-      this.mPnlLabel.Controls.Add(this.mLabCpu);
-      this.mPnlLabel.Location = new System.Drawing.Point(1, 1);
-      this.mPnlLabel.Name = "mPnlLabel";
-      this.mPnlLabel.Size = new System.Drawing.Size(32, 32);
-      this.mPnlLabel.TabIndex = 1;
+      this.panelLabel.BackgroundImage = ((Image)(resources.GetObject("panelLabel.BackgroundImage")));
+      this.panelLabel.Controls.Add(this.labelProcessor);
+      this.panelLabel.Location = new Point(1, 1);
+      this.panelLabel.Name = "panelLabel";
+      this.panelLabel.Size = new Size(32, 32);
+      this.panelLabel.TabIndex = 1;
       // 
       // MainWindow
       // 
-      this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-      this.BackColor = System.Drawing.Color.Black;
-      this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-      this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-      this.ClientSize = new System.Drawing.Size(210, 90);
-      this.Controls.Add(this.mPnlDisplayGraph);
+      this.AutoScaleBaseSize = new Size(5, 13);
+      this.BackColor = Color.Black;
+      this.BackgroundImage = ((Image)(resources.GetObject("$this.BackgroundImage")));
+      this.BackgroundImageLayout = ImageLayout.Stretch;
+      this.ClientSize = new Size(210, 90);
+      this.Controls.Add(this.panelDisplayGraph);
       this.DoubleBuffered = true;
-      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-      this.Location = new System.Drawing.Point(1050, 870);
+      this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+      this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
+      this.Location = new Point(1050, 870);
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "MainWindow";
       this.ShowInTaskbar = false;
-      this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+      this.StartPosition = FormStartPosition.Manual;
       this.Text = "Planet-Sensei.de - CPU Monitor";
       this.TopMost = true;
-      this.Load += new System.EventHandler(this.MainWindowOnLoad);
-      this.LocationChanged += new System.EventHandler(this.MainWindowOnLocationChanged);
-      this.mPnlDisplayGraph.ResumeLayout(false);
-      this.mPnlLabel.ResumeLayout(false);
+      this.Load += this.MainWindowOnLoad;
+      this.LocationChanged += this.MainWindowOnLocationChanged;
+      this.panelDisplayGraph.ResumeLayout(false);
+      this.panelLabel.ResumeLayout(false);
       this.ResumeLayout(false);
 
     }
@@ -229,22 +206,14 @@ namespace CpuMonitor
       int lUsage = (int)this.mCpuMonitor.GetCurrentCpuUsage();
 
       this.mCpuPaint.DrawGraph( lUsage );
-      this.mPnlDisplayGraph.Invalidate();
-      this.mLabCpu.Text = lUsage.ToString() + "%";
+      this.panelDisplayGraph.Invalidate();
+      this.labelProcessor.Text = lUsage + "%";
 
       // Should not be needed anymore...?
       //Application.DoEvents();
       //GC.Collect();
 
       this.Invalidate(true);
-    }
-
-    /// <summary>
-    /// Signals the application to close.
-    /// </summary>
-    private void BtnExitOnClick(object sender, EventArgs e)
-    {
-      Application.Exit();
     }
 
     /// <summary>
