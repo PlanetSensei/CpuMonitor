@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace CpuMonitor
 {
+  // ReSharper disable once ClassNeverInstantiated.Global
   class Program
   {
     /// <summary>

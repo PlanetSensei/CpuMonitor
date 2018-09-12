@@ -7,8 +7,6 @@ namespace CpuMonitor.Common
   /// </summary>
   public static class Files
   {
-    #region Fields
-
     /// <summary>
     /// File extension for backup files WITHOUT the dot.
     /// </summary>
@@ -29,10 +27,6 @@ namespace CpuMonitor.Common
     /// </summary>
     private static string fullSettingFile;
 
-    #endregion Fields
-
-    #region Properties
-
     /// <summary>
     /// Gets the combined path and file name for the settings file.
     /// </summary>
@@ -48,7 +42,5 @@ namespace CpuMonitor.Common
         return fullSettingFile;
       }
     }
-
-    #endregion Properties
   }
 }

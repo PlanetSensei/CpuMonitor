@@ -209,10 +209,6 @@ namespace CpuMonitor
       this.panelDisplayGraph.Invalidate();
       this.labelProcessor.Text = lUsage + "%";
 
-      // Should not be needed anymore...?
-      //Application.DoEvents();
-      //GC.Collect();
-
       this.Invalidate(true);
     }
 
