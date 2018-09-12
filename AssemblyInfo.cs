@@ -1,3 +1,4 @@
+using System.Resources;
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -60,3 +61,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyKeyName("")]
 [assembly:CLSCompliant(true)]
 [assembly:ComVisible(false)]
+[assembly: NeutralResourcesLanguage("")]
+

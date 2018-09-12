@@ -21,12 +21,12 @@ namespace CpuMonitor
     /// </summary>
     private const int PIX_DELTA_X_COORDS = 10;
 
-    private Control mControl;
+    private readonly Control mControl;
+    private readonly List<int> pointList = new List<int>();
+    private readonly Pen mGraphPen;
+    private readonly Pen mBackgroundLinesPen = new Pen(Color.DimGray, 1);
 
-    private List<int> mPointList = new List<int>();
     private float mUsage = 0f;
-    private Pen mGraphPen;
-    private Pen mBackgroundLinesPen = new Pen(Color.DimGray, 1);
 
     /// <summary>
     /// Konstruktor.
@@ -36,7 +36,7 @@ namespace CpuMonitor
     public CpuPaint(Control pControl, Pen graphPen)
     {
       this.mControl = pControl;
-      this.mControl.Paint += new PaintEventHandler(this.mControl_Paint);
+      this.mControl.Paint += new PaintEventHandler(this.ControlPaint);
 
       this.mGraphPen = graphPen;
     }
@@ -48,7 +48,7 @@ namespace CpuMonitor
     }
 
 
-    private void drawLines(Graphics pGraphics, int pControlHeight)
+    private void DrawLines(Graphics pGraphics, int pControlHeight)
     {
       float controlHeight = pGraphics.VisibleClipBounds.Height;
       float rowHeight = controlHeight / MAX_ROWS;
@@ -73,7 +73,7 @@ namespace CpuMonitor
     /// </summary>
     /// <param name="pGraphics"></param>
     /// <param name="pPointList"></param>
-    private void drawUsage(Graphics pGraphics, List<int> pPointList)
+    private void DrawUsage(Graphics pGraphics, List<int> pPointList)
     {
       int lXCoordinate = pPointList.Count * PIX_DELTA_X_COORDS;
 
@@ -85,7 +85,7 @@ namespace CpuMonitor
       Point lStartPoint = new Point(0, (int)pPointList[0]);
       Point lNextPoint;
 
-      for (int i = 0; i < this.mPointList.Count; i++)
+      for (int i = 0; i < this.pointList.Count; i++)
       {
         lNextPoint = new Point(i * PIX_DELTA_X_COORDS, (int)pPointList[i]);
         pGraphics.DrawLine(this.mGraphPen, lStartPoint, lNextPoint);
@@ -93,7 +93,7 @@ namespace CpuMonitor
       }
     }
 
-    private void mControl_Paint(object sender, PaintEventArgs e)
+    private void ControlPaint(object sender, PaintEventArgs e)
     {
       Graphics g = e.Graphics;
       Region lRegion = g.Clip;
@@ -101,7 +101,7 @@ namespace CpuMonitor
 
       //g.FillRegion( new SolidBrush( Color.Black ), lRegion );
 
-      this.drawLines(g, lHeight);
+      this.DrawLines(g, lHeight);
 
       if (lHeight != 0)
       {
@@ -110,9 +110,9 @@ namespace CpuMonitor
       }
 
       int lYCoordinate = this.mControl.ClientSize.Height - lHeight;
-      this.mPointList.Add(lYCoordinate);
+      this.pointList.Add(lYCoordinate);
 
-      this.drawUsage(g, this.mPointList);
+      this.DrawUsage(g, this.pointList);
 
     }
 
@@ -159,24 +159,11 @@ namespace CpuMonitor
         if (disposing)
         {
           // Hier MANAGED Resourcen freigeben.
-          if (this.mPointList != null)
-          {
-            this.mPointList.Clear();
-          }
+          this.pointList?.Clear();
 
-          if (this.mControl != null)
-          {
-            this.mControl.Dispose();
-          }
-          if (this.mBackgroundLinesPen != null)
-          {
-            this.mBackgroundLinesPen.Dispose();
-          }
-
-          if (this.mGraphPen != null)
-          {
-            this.mGraphPen.Dispose();
-          }
+          this.mControl?.Dispose();
+          this.mBackgroundLinesPen?.Dispose();
+          this.mGraphPen?.Dispose();
         }
 
         // Hier UNMANAGED Resourcen freigeben.

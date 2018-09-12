@@ -31,7 +31,7 @@ namespace CpuMonitor.Common
       string myDocumentsVendorFolder = Path.Combine(myDocumentsFolder, Titles.VendorName);
 
       // Check if folder exist and create them this is not yet the case.
-      FolderNames.createFoldersIfNotExist(appDataVendorFolder,
+      FolderNames.CreateFoldersIfNotExist(appDataVendorFolder,
                                        FolderNames.AppDataDirectory,
                                        myDocumentsVendorFolder);
     }
@@ -62,7 +62,7 @@ namespace CpuMonitor.Common
     /// Checks each directory if it exists and creates it, if not.
     /// </summary>
     /// <param name="folderList">The list of folder names that might need to be created.</param>
-    private static void createFoldersIfNotExist(params string[] folderList)
+    private static void CreateFoldersIfNotExist(params string[] folderList)
     {
       foreach (string dirName in folderList)
       {

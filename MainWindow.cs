@@ -40,12 +40,9 @@ namespace CpuMonitor
       //
       this.InitializeComponent();
 
-      string appTitle = string.Format("{0} - {1}",
-                                      Titles.ApplicationTitle,
-                                      Titles.VendorName);
-      this.Text = appTitle;
+      this.Text = $"{Titles.ApplicationTitle} - {Titles.VendorName}";
 
-      this.mCpuMonitor = new Monitor();
+            this.mCpuMonitor = new Monitor();
       this.mCpuPaint = new CpuPaint(this.mPnlDisplayGraph, new Pen(Color.Red, 1));
 
       this.FormClosing += this.MainWindowOnFormClosing;

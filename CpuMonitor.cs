@@ -8,7 +8,7 @@ namespace CpuMonitor
     /// </summary>
     public class Monitor : IDisposable
   {
-      private PerformanceCounter cpuCounter;
+    private readonly PerformanceCounter cpuCounter;
 
     public Monitor()
     {
@@ -20,11 +20,12 @@ namespace CpuMonitor
         };
     }
 
-    /// <summary>
-    /// Call this method every time you need to know the current cpu usage.
-    /// </summary>
-    /// <returns></returns>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Cpu")]
+        /// <summary>
+        /// Call this method every time you need to know the current cpu usage.
+        /// </summary>
+        /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Cpu")]
     public float GetCurrentCpuUsage()
     {
       float currentValue = this.cpuCounter.NextValue();
@@ -67,22 +68,9 @@ namespace CpuMonitor
     /// FALSE, wenn die Methode durch die Runtime aufgerufen wurde.</param>
     protected virtual void Dispose(bool disposing)
     {
-      // Prüfen, ob Dispose() bereits aufgerufen wurde.
-      if (!this.m_Disposed)
-      {
-        // Wenn disposing == TRUE, gib alle managed und unmanaged Resourcen frei.
-        if (disposing)
-        {
-            // Hier MANAGED Resourcen freigeben.
-            this.cpuCounter?.Dispose();
-        }
+      this.cpuCounter?.Dispose();
 
-        // Hier UNMANAGED Resourcen freigeben.
-        // Wenn disposing == false, wird nur der folgende Code ausgeführt.
-
-        // Speichern, dass Dispose fertig abgearbeitet wurde.
-        this.m_Disposed = true;
-      }
+      this.m_Disposed = true;
     }
 
     /// <summary>

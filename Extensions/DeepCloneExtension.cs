@@ -45,13 +45,14 @@ namespace CpuMonitor.Extensions
       }
     }
 
-    /// <summary>
-    /// Saves the serialized data into the given file name. If the file already exists the file will be overridden.
-    /// </summary>
-    /// <param name="callingInstance">The object that will be assigned the loaded values.</param>
-    /// <param name="loadedInstance">Returns the object that was created using the data of the serialized file.</param>
-    /// <param name="fileName">Path and file name to define the saving location.</param>
-    public static void Load<T>(this IDeepCloneable callingInstance, out T loadedInstance, string fileName)
+        /// <summary>
+        /// Saves the serialized data into the given file name. If the file already exists the file will be overridden.
+        /// </summary>
+        /// <param name="callingInstance">The object that will be assigned the loaded values.</param>
+        /// <param name="loadedInstance">Returns the object that was created using the data of the serialized file.</param>
+        /// <param name="fileName">Path and file name to define the saving location.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "callingInstance")]
+        public static void Load<T>(this IDeepCloneable callingInstance, out T loadedInstance, string fileName)
     {
       if (!(File.Exists(fileName)))
       {
@@ -94,7 +95,7 @@ namespace CpuMonitor.Extensions
       }
 
       // Get file name
-      string backupFile = string.Format("{0}.{1}", fileName, Files.BackupFileExtension);
+      string backupFile = $"{fileName}.{Files.BackupFileExtension}";
 
       // Old backup file is not needed anymore.
       if (File.Exists(backupFile))
