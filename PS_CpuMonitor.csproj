@@ -110,7 +110,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CpuMonitor.cs">
+    <Compile Include="Monitor.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CpuPaint.cs">

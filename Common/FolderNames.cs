@@ -9,7 +9,7 @@ namespace CpuMonitor.Common
     /// </summary>
     public static class FolderNames
   {
-    /// <summary>
+      /// <summary>
     /// Constructor.
     /// </summary>
     static FolderNames()
@@ -27,16 +27,16 @@ namespace CpuMonitor.Common
                                        myDocumentsVendorFolder);
     }
 
-    /// <summary>
-    /// Returns the name and path of the directory that contains the user specific application data files.
-    /// </summary>
-    public static string AppDataDirectory { get; }
+      /// <summary>
+      /// Returns the name and path of the directory that contains the user specific application data files.
+      /// </summary>
+      public static string AppDataDirectory { get; }
 
-    /// <summary>
-    /// Checks each directory if it exists and creates it, if not.
-    /// </summary>
-    /// <param name="folderList">The list of folder names that might need to be created.</param>
-    private static void CreateFoldersIfNotExist(params string[] folderList)
+      /// <summary>
+      /// Checks each directory if it exists and creates it, if not.
+      /// </summary>
+      /// <param name="folderList">The list of folder names that might need to be created.</param>
+      private static void CreateFoldersIfNotExist(params string[] folderList)
     {
       foreach (var dirName in folderList)
       {
