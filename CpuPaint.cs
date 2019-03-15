@@ -7,13 +7,13 @@ using System.Windows.Forms;
 namespace CpuMonitor
 {
     /// <summary>
-    /// Zusammenfassung für CpuPaint.
+    /// Zusammenfassung fÃ¼r CpuPaint.
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Cpu")]
     public sealed class CpuPaint : IDisposable
     {
         /// <summary>
-        /// Anzahl der angezeigten Maßeinheiten-Zeilen.
+        /// Anzahl der angezeigten MaÃŸeinheiten-Zeilen.
         /// </summary>
         private const int MaxRows = 10;
 
@@ -121,23 +121,23 @@ namespace CpuMonitor
 
         /// <summary>
         /// Implementiert IDisposable.
-        /// Eine abgeleitete Klasse sollte diese Methode nicht überschreiben können
+        /// Eine abgeleitete Klasse sollte diese Methode nicht Ã¼berschreiben kÃ¶nnen
         /// und die Methode darf nicht als VIRTUAL deklariert werden.
         /// </summary>
         public void Dispose()
         {
             this.Dispose(true);
 
-            // Dieses Objekt wird durch die Dispose() Methode aufgeräumt.
+            // Dieses Objekt wird durch die Dispose() Methode aufgerÃ¤umt.
             // Darum sollte GC.SupressFinalize aufgerufen werden, um dieses
             // Objekt aus der Finalization-Queue zu entfernen und zu
-            // verhindern, dass der Finalization-Code für dieses Objekt ein
-            // zweites Mal ausgeführt wird.
+            // verhindern, dass der Finalization-Code fÃ¼r dieses Objekt ein
+            // zweites Mal ausgefÃ¼hrt wird.
             GC.SuppressFinalize(this);
         }
 
         /// <summary>
-        /// Dispose(bool disposing) wird in zwei unterschiedlichen Szenarios ausgeführt.
+        /// Dispose(bool disposing) wird in zwei unterschiedlichen Szenarios ausgefÃ¼hrt.
         /// Wenn disposing == true, wurde die Methode direkt oder durch User-Code aufgerufen.
         /// Managed und unmanaged Resourcen werden freigegeben.
         /// Wenn disposing == false, wurde die Methode innerhalb des Finalizers durch die
@@ -148,7 +148,7 @@ namespace CpuMonitor
         /// FALSE, wenn die Methode durch die Runtime aufgerufen wurde.</param>
         public void Dispose(bool disposing)
         {
-            // Prüfen, ob Dispose() bereits aufgerufen wurde.
+            // PrÃ¼fen, ob Dispose() bereits aufgerufen wurde.
             if (!this.disposed)
             {
                 // Wenn disposing == TRUE, gib alle managed und unmanaged Resourcen frei.
@@ -163,7 +163,7 @@ namespace CpuMonitor
                 }
 
                 // Hier UNMANAGED Resourcen freigeben.
-                // Wenn disposing == false, wird nur der folgende Code ausgeführt.
+                // Wenn disposing == false, wird nur der folgende Code ausgefÃ¼hrt.
 
                 // Speichern, dass Dispose fertig abgearbeitet wurde.
                 this.disposed = true;
@@ -173,13 +173,13 @@ namespace CpuMonitor
         /// <summary>
         /// Verwende die C# Destruktor-Syntax anstelle des Finalizers.
         /// Der Destruktor wird nur aufgerufen, wenn die Dispose()-Methode NICHT aufgerufen wird.
-        /// Das gibt der Basisklasse die Möglichkeit zum Aufräumen.
-        /// Abgeleitete Klassen dürfen keine Destruktoren implementieren.
+        /// Das gibt der Basisklasse die MÃ¶glichkeit zum AufrÃ¤umen.
+        /// Abgeleitete Klassen dÃ¼rfen keine Destruktoren implementieren.
         /// </summary>
         ~CpuPaint()
         {
-            // Hier keine Code-Duplizierung zum Aufräumen verwenden.
-            // Für bessere Lesbarkeit und Wartbarkeit soll hier stattdessen
+            // Hier keine Code-Duplizierung zum AufrÃ¤umen verwenden.
+            // fÃ¼r bessere Lesbarkeit und Wartbarkeit soll hier stattdessen
             // nur Dispose(false) aufgerufen werden.
             this.Dispose(false);
         }

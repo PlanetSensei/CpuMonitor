@@ -4,27 +4,27 @@ using CpuMonitor.Interfaces;
 
 namespace CpuMonitor.Model
 {
-  /// <summary>
-  /// Provides properties about the main window.
-  /// </summary>
-  [Serializable]
-  public class WindowSettings : IDeepCloneable
-  {
-    #region Constructor
-
     /// <summary>
-    /// Creates a new instance of type WindowSettings.
+    /// Provides properties about the main window.
     /// </summary>
-    public WindowSettings()
+    [Serializable]
+    public class WindowSettings : IDeepCloneable
     {
-      this.Location = new Point(1050, 870);
+        #region Constructor
+
+        /// <summary>
+        /// Creates a new instance of type WindowSettings.
+        /// </summary>
+        public WindowSettings()
+        {
+            this.Location = new Point(1050, 870);
+        }
+
+        #endregion Constructor
+
+        /// <summary>
+        /// Gets or sets the current location of the main window.
+        /// </summary>
+        public Point Location { get; set; }
     }
-
-    #endregion Constructor
-
-    /// <summary>
-    /// Gets or sets the current location of the main window.
-    /// </summary>
-    public Point Location { get; set; }
-  }
 }
