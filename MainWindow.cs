@@ -1,296 +1,254 @@
 using System;
-using System.Drawing;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
-using System.IO;
+using CpuMonitor.Common;
 using CpuMonitor.Extensions;
 using CpuMonitor.Model;
-using CpuMonitor.Shared;
 
 namespace CpuMonitor
 {
-  /// <summary>
-  /// Zusammenfassung für MainWindow.
-  /// </summary>
-  public class MainWindow : Form
-  {
-    #region Fields
-
-    private Timer mTimer;
-    private CpuMonitor mCpuMonitor;
-    private System.ComponentModel.IContainer components = null;
-    private Label mLabCpu;
-    private Panel mPnlDisplayGraph;
-    private Panel mPnlLabel;
-    private CpuPaint mCpuPaint;
-
     /// <summary>
-    /// Saves current property values of the main window.
+    /// Zusammenfassung fÃ¼r MainWindow.
     /// </summary>
-    private WindowSettings windowSettings = new WindowSettings();
-
-    #endregion Fields
-
-    #region Constructor
-
-    /// <summary>
-    /// Konstruktor.
-    /// </summary>
-    public MainWindow()
+    public class MainWindow : Form
     {
-      //
-      // Erforderlich für die Windows Form-Designerunterstützung
-      //
-      InitializeComponent();
+        #region Fields
 
-      string appTitle = string.Format("{0} - {1}",
-                                      Titles.ApplicationTitle,
-                                      Titles.VendorName);
-      this.Text = appTitle;
+        private readonly Timer mTimer;
+        private readonly Monitor mCpuMonitor;
+        private readonly IContainer components = null;
+        private readonly CpuPaint mCpuPaint;
+        private Label labelProcessor;
+        private Panel panelDisplayGraph;
+        private Panel panelLabel;
 
-      this.mCpuMonitor = new CpuMonitor();
-      this.mCpuPaint = new CpuPaint(this.mPnlDisplayGraph, new Pen(Color.Red, 1));
+        /// <summary>
+        /// Saves current property values of the main window.
+        /// </summary>
+        private WindowSettings windowSettings = new WindowSettings();
 
-      this.FormClosing += this.mainWindowOnFormClosing;
+        #endregion Fields
 
-      this.mTimer = new Timer();
-      this.mTimer.Interval = 1000;
-      this.mTimer.Enabled = true;
-      this.mTimer.Tick += this.timerTick;
+        #region Constructor
 
-    }
-
-    #endregion Constructor
-
-    #region IDisposable Member
-
-    /// <summary>
-    /// Dispose(bool disposing) wird in zwei unterschiedlichen Szenarios ausgeführt.
-    /// Wenn disposing == true, wurde die Methode direkt oder durch User-Code aufgerufen.
-    /// Managed und unmanaged Resourcen werden freigegeben.
-    /// Wenn disposing == false, wurde die Methode innerhalb des Finalizers durch die
-    /// Runtime aufgerufen und sollte keine anderen Objekte mehr ansprechen.
-    /// Nur unmanaged Resourcen werden freigegeben.
-    /// </summary>
-    /// <param name="disposing">TRUE, wenn die Methode durch User-Code aufgerufen wurde oder
-    /// FALSE, wenn die Methode durch die Runtime aufgerufen wurde.</param>
-    protected override void Dispose(bool disposing)
-    {
-      // Prüfen, ob Dispose() bereits aufgerufen wurde.
-      if (!this.Disposing)
-      {
-        // Wenn disposing == TRUE, gib alle managed und unmanaged Resourcen frei.
-        if (disposing)
+        /// <inheritdoc />
+        public MainWindow()
         {
-          if (components != null)
-          {
-            components.Dispose();
-          }
+            //
+            // Erforderlich fÃ¼r die Windows Form-DesignerunterstÃ¼tzung
+            //
+            this.InitializeComponent();
 
-          if (this.mTimer != null)
-          {
-            this.mTimer.Stop();
-            this.mTimer.Enabled = false;
-            this.mTimer.Tick -= this.timerTick;
-            this.mTimer.Dispose();
-          }
+            this.Text = $"{Titles.ApplicationTitle} - {Titles.VendorName}";
 
-          if (this.mCpuMonitor != null)
-          {
-            this.mCpuMonitor.Dispose();
-          }
+            this.mCpuMonitor = new Monitor();
+            this.mCpuPaint = new CpuPaint(this.panelDisplayGraph, new Pen(Color.Red, 1));
 
-          if (this.mLabCpu != null)
-          {
-            this.mLabCpu.Dispose();
-          }
+            this.FormClosing += this.MainWindowOnFormClosing;
 
-          if (this.mPnlDisplayGraph != null)
-          {
-            this.mPnlDisplayGraph.Dispose();
-          }
+            this.mTimer = new Timer
+            {
+                Interval = 1000,
+                Enabled = true
+            };
 
-          if (this.mPnlLabel != null)
-          {
-            this.mPnlLabel.Dispose();
-          }
-
-          if (this.mCpuPaint != null)
-          {
-            this.mCpuPaint.Dispose();
-          }
+            this.mTimer.Tick += this.TimerTick;
         }
 
-        base.Dispose( disposing );
+        #endregion Constructor
 
-        // Hier UNMANAGED Resourcen freigeben.
-        // Wenn disposing == false, wird nur der folgende Code ausgeführt.
-      }
+        #region IDisposable Member
+
+        /// <summary>
+        /// Dispose(bool disposing) wird in zwei unterschiedlichen Szenarios ausgefÃ¼hrt.
+        /// Wenn disposing == true, wurde die Methode direkt oder durch User-Code aufgerufen.
+        /// Managed und unmanaged Resourcen werden freigegeben.
+        /// Wenn disposing == false, wurde die Methode innerhalb des Finalizers durch die
+        /// Runtime aufgerufen und sollte keine anderen Objekte mehr ansprechen.
+        /// Nur unmanaged Resourcen werden freigegeben.
+        /// </summary>
+        /// <param name="disposing">TRUE, wenn die Methode durch User-Code aufgerufen wurde oder
+        /// FALSE, wenn die Methode durch die Runtime aufgerufen wurde.</param>
+        protected override void Dispose(bool disposing)
+        {
+            // PrÃ¼fen, ob Dispose() bereits aufgerufen wurde.
+            if (!this.Disposing)
+            {
+                // Wenn disposing == TRUE, gib alle managed und unmanaged Resourcen frei.
+                if (disposing)
+                {
+                    this.components?.Dispose();
+
+                    if (this.mTimer != null)
+                    {
+                        this.mTimer.Stop();
+                        this.mTimer.Enabled = false;
+                        this.mTimer.Tick -= this.TimerTick;
+                        this.mTimer.Dispose();
+                    }
+
+                    this.mCpuMonitor?.Dispose();
+                    this.labelProcessor?.Dispose();
+                    this.panelDisplayGraph?.Dispose();
+                    this.panelLabel?.Dispose();
+                    this.mCpuPaint?.Dispose();
+                }
+
+                base.Dispose(disposing);
+
+                // Hier UNMANAGED Resourcen freigeben.
+                // Wenn disposing == false, wird nur der folgende Code ausgefÃ¼hrt.
+            }
+        }
+
+        /// <summary>
+        /// Verwende die C# Destruktor-Syntax anstelle des Finalizers.
+        /// Der Destruktor wird nur aufgerufen, wenn die Dispose()-Methode NICHT aufgerufen wird.
+        /// Das gibt der Basisklasse die MÃ¶glichkeit zum AufrÃ¤umen.
+        /// Abgeleitete Klassen dÃ¼rfen keine Destruktoren implementieren.
+        /// </summary>
+        ~MainWindow()
+        {
+            // Hier keine Code-Duplizierung zum AufrÃ¤umen verwenden.
+            // fÃ¼r bessere Lesbarkeit und Wartbarkeit soll hier stattdessen
+            // nur Dispose(false) aufgerufen werden.
+            this.Dispose(false);
+        }
+
+        #endregion
+
+
+        #region Vom Windows Form-Designer generierter Code
+        /// <summary>
+        /// Erforderliche Methode fÃ¼r die DesignerunterstÃ¼tzung. 
+        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geÃ¤ndert werden.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(MainWindow));
+            this.labelProcessor = new Label();
+            this.panelDisplayGraph = new Panel();
+            this.panelLabel = new Panel();
+            this.panelDisplayGraph.SuspendLayout();
+            this.panelLabel.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // labelProcessor
+            // 
+            this.labelProcessor.Anchor = AnchorStyles.Top | AnchorStyles.Bottom
+                                         | AnchorStyles.Left
+                                         | AnchorStyles.Right;
+            this.labelProcessor.BackColor = Color.Transparent;
+            this.labelProcessor.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            this.labelProcessor.ForeColor = Color.Green;
+            this.labelProcessor.Location = new Point(0, 0);
+            this.labelProcessor.Name = "labelProcessor";
+            this.labelProcessor.Size = new Size(29, 32);
+            this.labelProcessor.TabIndex = 0;
+            this.labelProcessor.Text = "0%";
+            this.labelProcessor.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // panelDisplayGraph
+            // 
+            this.panelDisplayGraph.BackgroundImage = ((Image)(resources.GetObject("panelDisplayGraph.BackgroundImage")));
+            this.panelDisplayGraph.BackgroundImageLayout = ImageLayout.Stretch;
+            this.panelDisplayGraph.Controls.Add(this.panelLabel);
+            this.panelDisplayGraph.Location = new Point(8, 7);
+            this.panelDisplayGraph.Name = "panelDisplayGraph";
+            this.panelDisplayGraph.Size = new Size(194, 77);
+            this.panelDisplayGraph.TabIndex = 1;
+            // 
+            // panelLabel
+            // 
+            this.panelLabel.BackgroundImage = ((Image)(resources.GetObject("panelLabel.BackgroundImage")));
+            this.panelLabel.Controls.Add(this.labelProcessor);
+            this.panelLabel.Location = new Point(1, 1);
+            this.panelLabel.Name = "panelLabel";
+            this.panelLabel.Size = new Size(32, 32);
+            this.panelLabel.TabIndex = 1;
+            // 
+            // MainWindow
+            // 
+            this.AutoScaleBaseSize = new Size(5, 13);
+            this.BackColor = Color.Black;
+            this.BackgroundImage = ((Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = ImageLayout.Stretch;
+            this.ClientSize = new Size(210, 90);
+            this.Controls.Add(this.panelDisplayGraph);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new Point(1050, 870);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "MainWindow";
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Text = "Planet-Sensei.de - CPU Monitor";
+            this.TopMost = true;
+            this.Load += this.MainWindowOnLoad;
+            this.LocationChanged += this.MainWindowOnLocationChanged;
+            this.panelDisplayGraph.ResumeLayout(false);
+            this.panelLabel.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+        #endregion
+
+        #region Event Handlers
+
+        /// <summary>
+        /// Updates the UI with the current values in the defined timer interval.
+        /// </summary>
+        private void TimerTick(object sender, EventArgs e)
+        {
+            int lUsage = (int)this.mCpuMonitor.GetCurrentCpuUsage();
+
+            this.mCpuPaint.DrawGraph(lUsage);
+            this.panelDisplayGraph.Invalidate();
+            this.labelProcessor.Text = lUsage + "%";
+
+            this.Invalidate(true);
+        }
+
+        /// <summary>
+        /// Memorizes the new location if the windows was moved by the user.
+        /// </summary>
+        private void MainWindowOnLocationChanged(object sender, EventArgs e)
+        {
+            this.windowSettings.Location = this.Location;
+        }
+
+        /// <summary>
+        /// Occurs when the form is closing, or, in this case, when the application is closing.
+        /// </summary>
+        private void MainWindowOnFormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.mTimer.Stop();
+            this.mTimer.Enabled = false;
+            this.mTimer.Tick -= this.TimerTick;
+
+            this.windowSettings.Save(Files.SettingsFile, BackupOption.None);
+        }
+
+        /// <summary>
+        /// Occurs when the application has started and the form is displayed for the first time.
+        /// </summary>
+        private void MainWindowOnLoad(object sender, EventArgs e)
+        {
+            this.windowSettings.Load(out this.windowSettings, Files.SettingsFile);
+
+            if (this.windowSettings == null)
+            {
+                this.windowSettings = new WindowSettings();
+            }
+
+            this.Location = this.windowSettings.Location;
+
+            this.mTimer.Start();
+        }
+
+        #endregion Event Handlers
     }
-
-    /// <summary>
-    /// Verwende die C# Destruktor-Syntax anstelle des Finalizers.
-    /// Der Destruktor wird nur aufgerufen, wenn die Dispose()-Methode NICHT aufgerufen wird.
-    /// Das gibt der Basisklasse die Möglichkeit zum Aufräumen.
-    /// Abgeleitete Klassen dürfen keine Destruktoren implementieren.
-    /// </summary>
-    ~MainWindow()
-    {
-      // Hier keine Code-Duplizierung zum Aufräumen verwenden.
-      // Für bessere Lesbarkeit und Wartbarkeit soll hier stattdessen
-      // nur Dispose(false) aufgerufen werden.
-      Dispose(false);
-    }
-
-    #endregion
-
-
-    #region Vom Windows Form-Designer generierter Code
-    /// <summary>
-    /// Erforderliche Methode für die Designerunterstützung. 
-    /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
-    /// </summary>
-    private void InitializeComponent()
-    {
-      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-      this.mLabCpu = new System.Windows.Forms.Label();
-      this.mPnlDisplayGraph = new System.Windows.Forms.Panel();
-      this.mPnlLabel = new System.Windows.Forms.Panel();
-      this.mPnlDisplayGraph.SuspendLayout();
-      this.mPnlLabel.SuspendLayout();
-      this.SuspendLayout();
-      // 
-      // mLabCpu
-      // 
-      this.mLabCpu.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.mLabCpu.BackColor = System.Drawing.Color.Transparent;
-      this.mLabCpu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.mLabCpu.ForeColor = System.Drawing.Color.Green;
-      this.mLabCpu.Location = new System.Drawing.Point(0, 0);
-      this.mLabCpu.Name = "mLabCpu";
-      this.mLabCpu.Size = new System.Drawing.Size(29, 32);
-      this.mLabCpu.TabIndex = 0;
-      this.mLabCpu.Text = "0%";
-      this.mLabCpu.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-      // 
-      // mPnlDisplayGraph
-      // 
-      this.mPnlDisplayGraph.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mPnlDisplayGraph.BackgroundImage")));
-      this.mPnlDisplayGraph.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-      this.mPnlDisplayGraph.Controls.Add(this.mPnlLabel);
-      this.mPnlDisplayGraph.Location = new System.Drawing.Point(8, 7);
-      this.mPnlDisplayGraph.Name = "mPnlDisplayGraph";
-      this.mPnlDisplayGraph.Size = new System.Drawing.Size(194, 77);
-      this.mPnlDisplayGraph.TabIndex = 1;
-      // 
-      // mPnlLabel
-      // 
-      this.mPnlLabel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("mPnlLabel.BackgroundImage")));
-      this.mPnlLabel.Controls.Add(this.mLabCpu);
-      this.mPnlLabel.Location = new System.Drawing.Point(1, 1);
-      this.mPnlLabel.Name = "mPnlLabel";
-      this.mPnlLabel.Size = new System.Drawing.Size(32, 32);
-      this.mPnlLabel.TabIndex = 1;
-      // 
-      // MainWindow
-      // 
-      this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-      this.BackColor = System.Drawing.Color.Black;
-      this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-      this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-      this.ClientSize = new System.Drawing.Size(210, 90);
-      this.Controls.Add(this.mPnlDisplayGraph);
-      this.DoubleBuffered = true;
-      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-      this.Location = new System.Drawing.Point(1050, 870);
-      this.MaximizeBox = false;
-      this.MinimizeBox = false;
-      this.Name = "MainWindow";
-      this.ShowInTaskbar = false;
-      this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-      this.Text = "Planet-Sensei.de - CPU Monitor";
-      this.TopMost = true;
-      this.Load += new System.EventHandler(this.mainWindowOnLoad);
-      this.LocationChanged += new System.EventHandler(this.mainWindowOnLocationChanged);
-      this.mPnlDisplayGraph.ResumeLayout(false);
-      this.mPnlLabel.ResumeLayout(false);
-      this.ResumeLayout(false);
-
-    }
-    #endregion
-
-    #region Event Handlers
-
-    /// <summary>
-    /// Updates the UI with the current values in the defined timer interval.
-    /// </summary>
-    private void timerTick(object sender, EventArgs e)
-    {			
-      int lUsage = (int)mCpuMonitor.getCurrentCpuUsage();
-
-      mCpuPaint.DrawGraph( lUsage );
-      this.mPnlDisplayGraph.Invalidate();
-      mLabCpu.Text = lUsage.ToString() + "%";
-
-      // Should not be needed anymore...?
-      //Application.DoEvents();
-      //GC.Collect();
-
-      this.Invalidate(true);
-    }
-
-    /// <summary>
-    /// Signals the application to close.
-    /// </summary>
-    private void btnExitOnClick(object sender, EventArgs e)
-    {
-      Application.Exit();
-    }
-
-    /// <summary>
-    /// Memorizes the new location if the windows was moved by the user.
-    /// </summary>
-    private void mainWindowOnLocationChanged(object sender, EventArgs e)
-    {
-      this.windowSettings.Location = this.Location;
-    }
-
-    /// <summary>
-    /// Occurs when the form is closing, or, in this case, when the application is closing.
-    /// </summary>
-    private void mainWindowOnFormClosing(object sender, FormClosingEventArgs e)
-    {
-      this.mTimer.Stop();
-      this.mTimer.Enabled = false;
-      this.mTimer.Tick -= this.timerTick;
-
-      this.windowSettings.Save(Files.SettingsFile, BackupOptions.None);
-    }
-
-    /// <summary>
-    /// Occurs when the application has started and the form is displayed for the first time.
-    /// </summary>
-    private void mainWindowOnLoad(object sender, EventArgs e)
-    {
-      this.windowSettings.Load(out this.windowSettings, Files.SettingsFile);
-
-      if (this.windowSettings == null)
-      {
-        this.windowSettings = new WindowSettings();
-      }
-      
-      this.Location = this.windowSettings.Location;
-
-      //this.mTimer = new Timer();
-      //this.mTimer.Interval = 1000;
-      //this.mTimer.Enabled = true;
-      //this.mTimer.Tick += this.timerTick;
-      this.mTimer.Start();
-    }
-
-    #endregion Event Handlers
-  }
 }
