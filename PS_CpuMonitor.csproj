@@ -112,13 +112,13 @@
     </Compile>
     <Compile Include="Configuration\Configurator.cs" />
     <Compile Include="Configuration\SettingsReader.cs" />
+    <Compile Include="Configuration\SettingsWriter.cs" />
     <Compile Include="Monitor.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CpuPaint.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\DeepCloneExtension.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\IDeepCloneable.cs" />
     <Compile Include="MainWindow.cs">
@@ -167,6 +167,7 @@
     <Content Include="utilities-system-monitor.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="Graphics\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

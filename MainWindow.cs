@@ -1,11 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using CpuMonitor.Common;
 using CpuMonitor.Configuration;
-using CpuMonitor.Extensions;
 using CpuMonitor.Model;
 
 namespace CpuMonitor
@@ -17,18 +15,18 @@ namespace CpuMonitor
     {
         #region Fields
 
-        private readonly Timer mTimer;
-        private readonly Monitor mCpuMonitor;
+        private readonly Timer _timer;
+        private readonly Monitor _monitor;
         private readonly IContainer components = null;
-        private readonly CpuPaint mCpuPaint;
-        private Label labelProcessor;
-        private Panel panelDisplayGraph;
-        private Panel panelLabel;
+        private readonly CpuPaint _cpuPaint;
+        private Label _labelProcessor;
+        private Panel _panelDisplayGraph;
+        private Panel _panelLabel;
 
         /// <summary>
         /// Saves current property values of the main window.
         /// </summary>
-        private WindowSettings windowSettings = new WindowSettings();
+        private WindowSettings _windowSettings = new WindowSettings();
 
         #endregion Fields
 
@@ -44,18 +42,18 @@ namespace CpuMonitor
 
             this.Text = $"{Titles.ApplicationTitle} - {Titles.VendorName}";
 
-            this.mCpuMonitor = new Monitor();
-            this.mCpuPaint = new CpuPaint(this.panelDisplayGraph, new Pen(Color.Red, 1));
+            this._monitor = new Monitor();
+            this._cpuPaint = new CpuPaint(this._panelDisplayGraph, new Pen(Color.Red, 1));
 
             this.FormClosing += this.MainWindowOnFormClosing;
 
-            this.mTimer = new Timer
+            this._timer = new Timer
             {
                 Interval = 1000,
                 Enabled = true
             };
 
-            this.mTimer.Tick += this.TimerTick;
+            this._timer.Tick += this.TimerTick;
         }
 
         #endregion Constructor
@@ -82,19 +80,19 @@ namespace CpuMonitor
                 {
                     this.components?.Dispose();
 
-                    if (this.mTimer != null)
+                    if (this._timer != null)
                     {
-                        this.mTimer.Stop();
-                        this.mTimer.Enabled = false;
-                        this.mTimer.Tick -= this.TimerTick;
-                        this.mTimer.Dispose();
+                        this._timer.Stop();
+                        this._timer.Enabled = false;
+                        this._timer.Tick -= this.TimerTick;
+                        this._timer.Dispose();
                     }
 
-                    this.mCpuMonitor?.Dispose();
-                    this.labelProcessor?.Dispose();
-                    this.panelDisplayGraph?.Dispose();
-                    this.panelLabel?.Dispose();
-                    this.mCpuPaint?.Dispose();
+                    this._monitor?.Dispose();
+                    this._labelProcessor?.Dispose();
+                    this._panelDisplayGraph?.Dispose();
+                    this._panelLabel?.Dispose();
+                    this._cpuPaint?.Dispose();
                 }
 
                 base.Dispose(disposing);
@@ -129,46 +127,46 @@ namespace CpuMonitor
         private void InitializeComponent()
         {
             ComponentResourceManager resources = new ComponentResourceManager(typeof(MainWindow));
-            this.labelProcessor = new Label();
-            this.panelDisplayGraph = new Panel();
-            this.panelLabel = new Panel();
-            this.panelDisplayGraph.SuspendLayout();
-            this.panelLabel.SuspendLayout();
+            this._labelProcessor = new Label();
+            this._panelDisplayGraph = new Panel();
+            this._panelLabel = new Panel();
+            this._panelDisplayGraph.SuspendLayout();
+            this._panelLabel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // labelProcessor
+            // _labelProcessor
             // 
-            this.labelProcessor.Anchor = AnchorStyles.Top | AnchorStyles.Bottom
+            this._labelProcessor.Anchor = AnchorStyles.Top | AnchorStyles.Bottom
                                          | AnchorStyles.Left
                                          | AnchorStyles.Right;
-            this.labelProcessor.BackColor = Color.Transparent;
-            this.labelProcessor.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.labelProcessor.ForeColor = Color.Green;
-            this.labelProcessor.Location = new Point(0, 0);
-            this.labelProcessor.Name = "labelProcessor";
-            this.labelProcessor.Size = new Size(29, 32);
-            this.labelProcessor.TabIndex = 0;
-            this.labelProcessor.Text = "0%";
-            this.labelProcessor.TextAlign = ContentAlignment.MiddleCenter;
+            this._labelProcessor.BackColor = Color.Transparent;
+            this._labelProcessor.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            this._labelProcessor.ForeColor = Color.Green;
+            this._labelProcessor.Location = new Point(0, 0);
+            this._labelProcessor.Name = "_labelProcessor";
+            this._labelProcessor.Size = new Size(29, 32);
+            this._labelProcessor.TabIndex = 0;
+            this._labelProcessor.Text = "0%";
+            this._labelProcessor.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // panelDisplayGraph
+            // _panelDisplayGraph
             // 
-            this.panelDisplayGraph.BackgroundImage = ((Image)(resources.GetObject("panelDisplayGraph.BackgroundImage")));
-            this.panelDisplayGraph.BackgroundImageLayout = ImageLayout.Stretch;
-            this.panelDisplayGraph.Controls.Add(this.panelLabel);
-            this.panelDisplayGraph.Location = new Point(8, 7);
-            this.panelDisplayGraph.Name = "panelDisplayGraph";
-            this.panelDisplayGraph.Size = new Size(194, 77);
-            this.panelDisplayGraph.TabIndex = 1;
+            this._panelDisplayGraph.BackgroundImage = ((Image)(resources.GetObject("_panelDisplayGraph.BackgroundImage")));
+            this._panelDisplayGraph.BackgroundImageLayout = ImageLayout.Stretch;
+            this._panelDisplayGraph.Controls.Add(this._panelLabel);
+            this._panelDisplayGraph.Location = new Point(8, 7);
+            this._panelDisplayGraph.Name = "_panelDisplayGraph";
+            this._panelDisplayGraph.Size = new Size(194, 77);
+            this._panelDisplayGraph.TabIndex = 1;
             // 
-            // panelLabel
+            // _panelLabel
             // 
-            this.panelLabel.BackgroundImage = ((Image)(resources.GetObject("panelLabel.BackgroundImage")));
-            this.panelLabel.Controls.Add(this.labelProcessor);
-            this.panelLabel.Location = new Point(1, 1);
-            this.panelLabel.Name = "panelLabel";
-            this.panelLabel.Size = new Size(32, 32);
-            this.panelLabel.TabIndex = 1;
+            this._panelLabel.BackgroundImage = ((Image)(resources.GetObject("_panelLabel.BackgroundImage")));
+            this._panelLabel.Controls.Add(this._labelProcessor);
+            this._panelLabel.Location = new Point(1, 1);
+            this._panelLabel.Name = "_panelLabel";
+            this._panelLabel.Size = new Size(32, 32);
+            this._panelLabel.TabIndex = 1;
             // 
             // MainWindow
             // 
@@ -177,7 +175,7 @@ namespace CpuMonitor
             this.BackgroundImage = ((Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = ImageLayout.Stretch;
             this.ClientSize = new Size(210, 90);
-            this.Controls.Add(this.panelDisplayGraph);
+            this.Controls.Add(this._panelDisplayGraph);
             this.DoubleBuffered = true;
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             this.Icon = ((Icon)(resources.GetObject("$this.Icon")));
@@ -191,8 +189,8 @@ namespace CpuMonitor
             this.TopMost = true;
             this.Load += this.MainWindowOnLoad;
             this.LocationChanged += this.MainWindowOnLocationChanged;
-            this.panelDisplayGraph.ResumeLayout(false);
-            this.panelLabel.ResumeLayout(false);
+            this._panelDisplayGraph.ResumeLayout(false);
+            this._panelLabel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -205,11 +203,11 @@ namespace CpuMonitor
         /// </summary>
         private void TimerTick(object sender, EventArgs e)
         {
-            int lUsage = (int)this.mCpuMonitor.GetCurrentCpuUsage();
+            int lUsage = (int)this._monitor.GetCurrentCpuUsage();
 
-            this.mCpuPaint.DrawGraph(lUsage);
-            this.panelDisplayGraph.Invalidate();
-            this.labelProcessor.Text = lUsage + "%";
+            this._cpuPaint.DrawGraph(lUsage);
+            this._panelDisplayGraph.Invalidate();
+            this._labelProcessor.Text = lUsage + "%";
 
             this.Invalidate(true);
         }
@@ -219,7 +217,7 @@ namespace CpuMonitor
         /// </summary>
         private void MainWindowOnLocationChanged(object sender, EventArgs e)
         {
-            this.windowSettings.Location = this.Location;
+            this._windowSettings.Location = this.Location;
         }
 
         /// <summary>
@@ -227,11 +225,11 @@ namespace CpuMonitor
         /// </summary>
         private void MainWindowOnFormClosing(object sender, FormClosingEventArgs e)
         {
-            this.mTimer.Stop();
-            this.mTimer.Enabled = false;
-            this.mTimer.Tick -= this.TimerTick;
+            this._timer.Stop();
+            this._timer.Enabled = false;
+            this._timer.Tick -= this.TimerTick;
 
-            this.windowSettings.Save(Files.SettingsFile, BackupOption.None);
+            SettingsWriter.Save(_windowSettings, Files.SettingsFile, BackupOption.None);
         }
 
         /// <summary>
@@ -239,11 +237,11 @@ namespace CpuMonitor
         /// </summary>
         private void MainWindowOnLoad(object sender, EventArgs e)
         {
-            this.windowSettings = SettingsReader.Read();
+            this._windowSettings = SettingsReader.Read();
 
-            Configurator.AssignSettings(this, windowSettings);
+            Configurator.AssignSettings(this, _windowSettings);
 
-            this.mTimer.Start();
+            this._timer.Start();
         }
 
         #endregion Event Handlers

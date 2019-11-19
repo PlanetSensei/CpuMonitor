@@ -1,16 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using CpuMonitor.Common;
 using CpuMonitor.Interfaces;
 
-namespace CpuMonitor.Extensions
+namespace CpuMonitor.Configuration
 {
     /// <summary>
     /// Handles deep cloning on objects that implement the required interface.
     /// </summary>
-    public static class DeepCloneExtension
+    public static class SettingsWriter
     {
         #region Public Methods
 
@@ -20,7 +19,7 @@ namespace CpuMonitor.Extensions
         /// <param name="objectToBeSaved">The object to be saved.</param>
         /// <param name="fileName">Path and file name to define the saving location.</param>
         /// <param name="saveOption">Defines if a backup file should be created if a file with the same name already exists.</param>
-        public static void Save(this IDeepCloneable objectToBeSaved, string fileName, BackupOption saveOption = BackupOption.CreateBackup)
+        public static void Save(IDeepCloneable objectToBeSaved, string fileName, BackupOption saveOption = BackupOption.CreateBackup)
         {
             var serializedData = GetSerializedData(objectToBeSaved);
 
