@@ -21,7 +21,7 @@
     <StartupObject>CpuMonitor.Program</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <OldToolsVersion>0.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile>
@@ -110,6 +110,8 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\Configurator.cs" />
+    <Compile Include="Configuration\SettingsReader.cs" />
     <Compile Include="Monitor.cs">
       <SubType>Code</SubType>
     </Compile>
