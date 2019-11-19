@@ -14,20 +14,6 @@ namespace CpuMonitor.Extensions
     {
         #region Public Methods
 
-        ///// <summary>
-        ///// Creates a new copied instance of the given object with the same values.
-        ///// </summary>
-        ///// <param name="objectToBeCloned">The object that will be cloned.</param>
-        ///// <returns>Returns the cloned object.</returns>
-        //public static object DeepClone(this IDeepCloneable objectToBeCloned)
-        //{
-        //    byte[] serializedData = GetSerializedData(objectToBeCloned);
-
-        //    // Now create the cloned object.
-        //    object clonedObject = DeserializeData(serializedData);
-        //    return clonedObject;
-        //}
-
         /// <summary>
         /// Saves the serialized data into the given file name. If the file already exists the file will be overridden.
         /// </summary>
@@ -36,11 +22,11 @@ namespace CpuMonitor.Extensions
         /// <param name="saveOption">Defines if a backup file should be created if a file with the same name already exists.</param>
         public static void Save(this IDeepCloneable objectToBeSaved, string fileName, BackupOption saveOption = BackupOption.CreateBackup)
         {
-            byte[] serializedData = GetSerializedData(objectToBeSaved);
+            var serializedData = GetSerializedData(objectToBeSaved);
 
             BackupFileIfExists(fileName, saveOption);
 
-            using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
+            using (var fileStream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
             {
                 fileStream.Write(serializedData, 0, serializedData.Length);
             }
