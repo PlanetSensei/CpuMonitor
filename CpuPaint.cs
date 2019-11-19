@@ -37,8 +37,23 @@ namespace CpuMonitor
         /// <exception cref="ArgumentNullException">At least one of the arguments was null.</exception>
         public CpuPaint(Control hostControl, Pen graphPen)
         {
-            this._control = hostControl ?? throw new ArgumentNullException(nameof(hostControl));
-            this._graphPen = graphPen ?? throw new ArgumentNullException(nameof(graphPen));
+            if (hostControl != null)
+            {
+                _control = hostControl;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(hostControl));
+            }
+
+            if (graphPen != null)
+            {
+                _graphPen = graphPen;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(graphPen));
+            }
 
             this._control.Paint += this.ControlPaint;
         }

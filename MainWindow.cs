@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CpuMonitor.Common;
+using CpuMonitor.Configuration;
 using CpuMonitor.Extensions;
 using CpuMonitor.Model;
 
@@ -238,31 +239,13 @@ namespace CpuMonitor
         /// </summary>
         private void MainWindowOnLoad(object sender, EventArgs e)
         {
-            this.windowSettings.Load(out this.windowSettings, Files.SettingsFile);
+            this.windowSettings = SettingsReader.Read();
 
-            if (this.windowSettings == null || !IsOnScreen(this))
-            {
-                this.windowSettings = new WindowSettings();
-        }
-
-            this.Location = this.windowSettings.Location;
+            Configurator.AssignSettings(this, windowSettings);
 
             this.mTimer.Start();
         }
 
         #endregion Event Handlers
-
-        #region Private Methods
-
-        private static bool IsOnScreen(Form form)
-        {
-            // Create rectangle
-            var formRectangle = new Rectangle(form.Left, form.Top, form.Width, form.Height);
-
-            // Test
-            return Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(formRectangle));
-        }
-
-        #endregion Private Methods
     }
 }

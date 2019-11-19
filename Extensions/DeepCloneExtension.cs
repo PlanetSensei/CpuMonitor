@@ -14,19 +14,19 @@ namespace CpuMonitor.Extensions
     {
         #region Public Methods
 
-        /// <summary>
-        /// Creates a new copied instance of the given object with the same values.
-        /// </summary>
-        /// <param name="objectToBeCloned">The object that will be cloned.</param>
-        /// <returns>Returns the cloned object.</returns>
-        public static object DeepClone(this IDeepCloneable objectToBeCloned)
-        {
-            byte[] serializedData = GetSerializedData(objectToBeCloned);
+        ///// <summary>
+        ///// Creates a new copied instance of the given object with the same values.
+        ///// </summary>
+        ///// <param name="objectToBeCloned">The object that will be cloned.</param>
+        ///// <returns>Returns the cloned object.</returns>
+        //public static object DeepClone(this IDeepCloneable objectToBeCloned)
+        //{
+        //    byte[] serializedData = GetSerializedData(objectToBeCloned);
 
-            // Now create the cloned object.
-            object clonedObject = DeserializeData(serializedData);
-            return clonedObject;
-        }
+        //    // Now create the cloned object.
+        //    object clonedObject = DeserializeData(serializedData);
+        //    return clonedObject;
+        //}
 
         /// <summary>
         /// Saves the serialized data into the given file name. If the file already exists the file will be overridden.
@@ -44,34 +44,6 @@ namespace CpuMonitor.Extensions
             {
                 fileStream.Write(serializedData, 0, serializedData.Length);
             }
-        }
-
-        /// <summary>
-        /// Saves the serialized data into the given file name. If the file already exists the file will be overridden.
-        /// </summary>
-        /// <param name="callingInstance">The object that will be assigned the loaded values.</param>
-        /// <param name="loadedInstance">Returns the object that was created using the data of the serialized file.</param>
-        /// <param name="fileName">Path and file name to define the saving location.</param>
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "callingInstance")]
-        public static void Load<T>(this IDeepCloneable callingInstance, out T loadedInstance, string fileName)
-        {
-            if (!(File.Exists(fileName)))
-            {
-                loadedInstance = default(T);
-                return;
-            }
-
-            byte[] serializedData = null;
-            using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                int length = (int)fileStream.Length;
-                serializedData = new byte[length];
-
-                fileStream.Read(serializedData, 0, length);
-            }
-
-            object objectInstance = DeserializeData(serializedData);
-            loadedInstance = (T)objectInstance;
         }
 
         #endregion Public Methods
@@ -106,23 +78,6 @@ namespace CpuMonitor.Extensions
 
             // Rename is a MOVE in Windows API
             File.Move(fileName, backupFile);
-        }
-
-        /// <summary>
-        /// Deserializes the raw bytes into a new object instance.
-        /// </summary>
-        /// <param name="serializedData">The serialized object in raw byte form.</param>
-        /// <returns>Returns the created object.</returns>
-        private static object DeserializeData(byte[] serializedData)
-        {
-            using (MemoryStream memoryStream = new MemoryStream(serializedData))
-            {
-                StreamingContext streamingContext = new StreamingContext(StreamingContextStates.Remoting);
-                BinaryFormatter binaryFormatter = new BinaryFormatter(null, streamingContext);
-                object cloneInstance = binaryFormatter.Deserialize(memoryStream);
-
-                return cloneInstance;
-            }
         }
 
         /// <summary>
