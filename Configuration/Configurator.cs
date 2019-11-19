@@ -20,12 +20,12 @@ namespace CpuMonitor.Configuration
             }
         }
 
-        private static Point FindScreenCenter(MainWindow window)
+        private static Point FindScreenCenter(Form window)
         {
             return new Point((Screen.PrimaryScreen.Bounds.Size.Width / 2) - (window.Size.Width / 2), (Screen.PrimaryScreen.Bounds.Size.Height / 2) - (window.Size.Height / 2));
         }
 
-        private static bool IsOnScreen(Form form)
+        private static bool IsOnScreen(Control form)
         {
             // Create rectangle
             var formRectangle = new Rectangle(form.Left, form.Top, form.Width, form.Height);

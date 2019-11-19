@@ -2,7 +2,6 @@
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using CpuMonitor.Common;
-using CpuMonitor.Extensions;
 using CpuMonitor.Model;
 
 namespace CpuMonitor.Configuration
@@ -31,8 +30,8 @@ namespace CpuMonitor.Configuration
                 return loadedInstance;
             }
 
-            byte[] serializedData = null;
-            using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            byte[] serializedData;
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 int length = (int)fileStream.Length;
                 serializedData = new byte[length];
