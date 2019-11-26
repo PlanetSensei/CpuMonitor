@@ -9,13 +9,15 @@ namespace CpuMonitor.Configuration
     {
         internal static void AssignSettings(MainWindow window, WindowSettings settings)
         {
+            window.Location = settings.Location;
+            ResetToScreenCenterIfWindowIsOutsideScreen(window, settings);
+        }
+
+        private static void ResetToScreenCenterIfWindowIsOutsideScreen(MainWindow window, WindowSettings settings)
+        {
             if (!IsOnScreen(window))
             {
                 settings.Location = FindScreenCenter(window);
-                window.Location = settings.Location;
-            }
-            else
-            {
                 window.Location = settings.Location;
             }
         }
@@ -27,11 +29,10 @@ namespace CpuMonitor.Configuration
 
         private static bool IsOnScreen(Control form)
         {
-            // Create rectangle
             var formRectangle = new Rectangle(form.Left, form.Top, form.Width, form.Height);
 
-            // Test
-            return Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(formRectangle));
+            var isOnAnyScreen = Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(formRectangle));
+            return isOnAnyScreen;
         }
     }
 }
